@@ -1,1 +1,2 @@
-FROM judge0/api:1.13.0
+FROM judge0/api:latest
+
