@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:6.2
+    restart: always
+
+  api:
+    image: judge0/api:1.13.0
+    ports:
+      - "2358:2358"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - SERVER_PORT=2358
+    depends_on:
+      - redis
+
+  worker:
+    image: judge0/worker:1.13.0
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+
+  sandbox:
+    image: judge0/sandbox:1.13.0
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
